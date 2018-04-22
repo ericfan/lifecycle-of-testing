@@ -3,19 +3,27 @@ package unit.org.sample.controller;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sample.LifecycleTestingApplication;
-import org.sample.controller.HomeController;
+import org.sample.controller.PersonController;
+import org.sample.model.Person;
+import org.sample.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Test case for {@link HomeController}.
+ * Test case for {@link PersonController}.
  * Use {@link WebMvcTest}, means Spring Boot is only instantiating the web layer, not the whole context.
  * In an application with multiple controllers you can even ask for just one to be instantiated.
  *
@@ -23,18 +31,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @since 21/04/2018
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(HomeController.class)
+@WebMvcTest(PersonController.class)
 @ContextConfiguration(classes={LifecycleTestingApplication.class})
-public class HomeControllerTest {
+public class PersonControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    public void testIndex() throws Exception {
-        mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("index.html"));
-    }
+    @MockBean
+    private PersonService personService;
 
+    @Test
+    public void testGetPersons() throws Exception {
+        when(personService.getAllPersonList()).thenReturn(Arrays.asList(new Person(1, "ut", 10)));
+        mockMvc.perform(get("/persons"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("ut")))
+                .andExpect(jsonPath("$[0].age", is(10)));
+    }
 }

@@ -24,8 +24,6 @@ repositories {
 
 
 dependencies {
-	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
-
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.4.RELEASE'
 	compile group: 'org.webjars', name: 'webix', version: '4.4.0'
