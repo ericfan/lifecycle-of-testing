@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>LifeCycle-Of-Testing</title>
+    <link rel="stylesheet" href="webjars/webix/4.4.0/webix.css" type="text/css" charset="utf-8">
+    <script src="webjars/webix/4.4.0/webix.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        webix.ready(function() {
+            webix.ajax().get("/persons", function(text, data){
+                new webix.ui({
+                    container:"sampleTable",
+                    view:"datatable",
+                    columns:[
+                        {id:"id", header: "ID", width: 50},
+                        {id:"name", header: "Name", width: 100},
+                        {id:"age", header: "Age", width: 50}],
+                    data: data.json()
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <div id="sampleTable"></div>
+</body>
+</html>
