@@ -11,6 +11,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'scala'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -31,5 +32,21 @@ dependencies {
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.seleniumhq.selenium:selenium-java:3.9.1')
+	testCompile group: 'io.gatling.highcharts', name: 'gatling-charts-highcharts', version: '2.1.6'
+}
 
+task loadTest(type: JavaExec) {
+	dependsOn testClasses
+	description = "Load Test With Gatling"
+	group = "Load Test"
+	classpath = sourceSets.test.runtimeClasspath
+	jvmArgs = [
+			"-Dgatling.core.directory.binaries=${sourceSets.test.output.classesDir.toString()}",
+			"-Dio.netty.noUnsafe=true"
+	]
+	main = "io.gatling.app.Gatling"
+	args = [
+			"--simulation", "GetPersonGatlingTest",
+			"--results-folder", "${buildDir}/gatling-results"
+	]
 }
