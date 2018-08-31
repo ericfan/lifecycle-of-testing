@@ -8,6 +8,8 @@ import org.sample.config.DatabaseConfig;
 import org.sample.mapper.PersonMapper;
 import org.sample.model.Person;
 import org.sample.service.PersonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,6 +20,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @Import(DatabaseConfig.class)
 public class PersonServiceTest {
+    private Logger logger = LoggerFactory.getLogger(PersonServiceTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -25,13 +28,15 @@ public class PersonServiceTest {
     private PersonService personService;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         personService = new PersonService(jdbcTemplate, new PersonMapper());
     }
 
     @Test
     public void testGetAllPersonList() {
-        List<Person> list =  personService.getAllPersonList();
+        //Unit test log should only display on console, not stored in log file.
+        logger.info("FROM PersonService Unit Test*****************");
+        List<Person> list = personService.getAllPersonList();
         Assert.assertEquals(4, list.size());
     }
 }

@@ -1,7 +1,7 @@
 <configuration>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>./logs/tests.log</file>
-        <append>true</append>
+        <file>./logs/integration/tests.log</file>
+        <filter class="org.sample.ThresholdLoggerFilter"/>
         <encoder>
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
@@ -13,14 +13,12 @@
         </encoder>
     </appender>
 
-    <logger name="org.sample.integration" level="info">
+    <logger name="org.sample" level="info">
         <appender-ref ref="FILE"/>
-        <appender-ref ref="STDOUT"/>
     </logger>
 
-    <!--<root level="info">-->
-        <!--<appender-ref ref="STDOUT"/>-->
-        <!--<appender-ref ref="FILE"/>-->
-    <!--</root>-->
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
 
 </configuration>

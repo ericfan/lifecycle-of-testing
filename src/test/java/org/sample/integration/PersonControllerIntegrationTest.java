@@ -34,6 +34,7 @@ public class PersonControllerIntegrationTest {
 
     @Test
     public void testGetPersons() throws Exception {
+        //Integration test log should display on Console and store in log file
         logger.info("From PersonControllerIntegrationTest##############");
 
         mockMvc.perform(get("/persons"))

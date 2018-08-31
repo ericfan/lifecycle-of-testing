@@ -3,6 +3,7 @@
 .idea
 out
 build
+logs
 lifecycle-of-testing.iml
 
 
